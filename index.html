@@ -19,10 +19,10 @@ main>header button{font-size:11px;padding:6px 7px}
 .stage canvas{position:absolute;width:100%;height:100%;aspect-ratio:auto}
 main>footer{margin:0;padding:7px max(10px,env(safe-area-inset-right)) max(7px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));background:#101827}
 footer small:first-child{max-width:72%}
-.game-controls{padding:6px 8px max(6px,env(safe-area-inset-bottom));grid-template-columns:1fr 1.6fr 1fr;gap:8px;background:#101827;flex:none;touch-action:manipulation}
+.game-controls{padding:8px max(8px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));grid-template-columns:minmax(0,1fr) minmax(0,1.45fr) minmax(0,1fr);gap:8px;background:#101827;flex:none;touch-action:manipulation}
 .running .game-controls{display:grid}.running footer{display:none}
-.game-controls button{min-height:48px;font-size:17px}
-.game-controls #jump-control{background:#ffd28a;color:#382518}
+.game-controls button{width:100%;min-width:0;min-height:clamp(76px,22vw,94px);padding:0 4px;border-radius:20px;font-size:clamp(30px,9vw,42px);line-height:1;touch-action:manipulation}
+.game-controls #jump-control{background:#ffd28a;color:#382518;font-size:clamp(22px,6.8vw,32px)}
 .intro h1{font-size:clamp(38px,12vw,65px)}
 .overlay{background:linear-gradient(180deg,#10182755,#101827da 36%,#101827e0 67%,#10182710)}
 .stats{gap:5px}.stats span{padding:6px 7px;font-size:11px}

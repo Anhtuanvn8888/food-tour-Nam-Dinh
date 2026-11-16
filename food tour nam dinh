@@ -1,0 +1,150 @@
+{
+  "appId": "vn.minigameaistudio.cunduaden",
+  "appName": "Đạp Xe Food Tour",
+  "webDir": "www"
+}
+
+# Đạp Xe Food Tour Nam Định
+
+## Chơi thử trên Windows
+
+Giải nén toàn bộ ZIP, mở thư mục `www`, rồi mở `index.html` bằng Chrome hoặc Edge. Giữ nguyên các file cùng thư mục. Để xem ở kích cỡ điện thoại trong Chrome, nhấn F12, rồi Ctrl+Shift+M và chọn thiết bị.
+
+Game chơi offline. Kỷ lục và Sổ Food Tour được lưu trên từng trình duyệt hoặc bản app.
+
+## Tạo dự án Android
+
+Cài Node.js 22 trở lên và Android Studio theo [tài liệu môi trường Capacitor](https://capacitorjs.com/docs/getting-started/environment-setup). Mở PowerShell tại thư mục có file `package.json` và chạy:
+
+```powershell
+npm install
+npx cap add android
+npx cap open android
+```
+
+Thử game trên máy Android thật trước. Khi đã chốt bản phát hành, tạo Android App Bundle ký số trong Android Studio rồi đưa lên Play Console.
+
+## Tạo dự án iOS
+
+Trên máy Mac có Xcode tương thích, mở Terminal tại thư mục có `package.json` và chạy:
+
+```bash
+npm install
+npx cap add ios
+npx cap open ios
+```
+
+Thử game trên iPhone thật. Dùng Xcode để thiết lập ký ứng dụng, tạo bản archive và đưa lên App Store Connect.
+
+## Trước khi phát hành
+
+- Chốt mã ứng dụng trong `capacitor.config.json` trước khi chạy lệnh `cap add`. Mã trong gói là đề xuất. Nếu đã tạo hồ sơ app trên cửa hàng, dùng mã của hồ sơ đó.
+- Giao diện thiết kế cho màn hình dọc. Đặt hướng dọc trong mỗi dự án native trước khi build.
+- Sau mỗi lần sửa trong `www`, chạy `npx cap sync` để chép nội dung mới vào các dự án đã tạo.
+- Gói này chứa mã nguồn web và cấu hình Capacitor. Hãy tạo, ký và thử bản native theo các bước trên.
+
+Xem bảng đánh giá và sơ đồ quán hai bên đường trong `TUYEN-FOOD-TOUR.md`.
+
+Vuốt ngang để đổi làn, chạm để nhảy. Trên điện thoại có nút trái, nhảy và phải. Tuyến cầu là phối cảnh 3D cách điệu.
+
+## Gara và chế độ khó
+
+- Chọn Thường, Khó hoặc Cực khó trước khi bắt đầu. Mỗi chế độ lưu một kỷ lục riêng. Hai chế độ khó có tốc độ, mật độ chướng ngại cao hơn và thưởng xu gấp 2 hoặc 3.
+- Kiếm xu theo quãng đường, số đom đóm và số quán thắp sáng. Mở Gara để mua hoặc trang bị xe và pet. Món đã mua có thể đổi lại miễn phí.
+- Các xe và pet là trang bị ngoại hình. Cả ba xe dùng cùng thao tác điều khiển và luật va chạm.
+- Ví, đồ đã mua và các kỷ lục được lưu trên trình duyệt đang chơi.
+
+{
+  "name": "cun-dua-den",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/ios": "^8.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0"
+  }
+}
+
+# Đạp Xe Food Tour Nam Định
+
+## Bảng lượt đánh giá
+
+Thống kê 20 địa điểm ăn uống công khai trên [TRIPMAP, phường Nam Định](https://tripmap.vn/en/food_most_reviewed-ninh_binh_phuong_nam_dinh.html), tham khảo tháng 11/2026. Xếp theo số lượt đánh giá. Phạm vi là phường Nam Định theo danh mục của nguồn. Số liệu được lưu trong bản game và có thể thay đổi ngoài thực tế.
+
+| Hạng | Địa điểm | Lượt đánh giá |
+| ---: | --- | ---: |
+| 1 | Cát Tường Coffee | 1.867 |
+| 2 | Bánh mì patê Hà Bò | 1.447 |
+| 3 | Lưu Gia Trang | 1.052 |
+| 4 | Không Gian Dệt Xưa | 905 |
+| 5 | Golden Palace | 545 |
+| 6 | Phở bò Cụ Tặng | 525 |
+| 7 | Highlands Coffee Nam Định Tower | 446 |
+| 8 | Highlands Coffee Nguyễn Du | 390 |
+| 9 | Nhà hàng Chen 02 | 336 |
+| 10 | Bún móng giò Bảy Cầu Muối | 332 |
+| 11 | Xíu páo Hạnh Phúc | 265 |
+| 12 | King BBQ Buffet | 258 |
+| 13 | Kem xôi 132 Nguyễn Du | 243 |
+| 14 | Cơm niêu Kombo | 229 |
+| 15 | Phở xíu chấm Quán Bé | 215 |
+| 16 | Nhà hàng Nguyên Hằng | 213 |
+| 17 | Vườn Thiên Trường | 203 |
+| 18 | Sáu Nướng 2 | 194 |
+| 19 | Newland Coffee | 193 |
+| 20 | Lion Coffee | 192 |
+
+Tuyến cũng giữ năm quán và món từ bản trước gồm bánh mì Ba Lan, bánh bao Mi Ni, nem cuộn, bánh cuốn Nam Định và nước Bát Bảo. Bánh mì Ba Lan có 28 lượt đánh giá Google theo [Restaurant Guru](https://restaurantguru.com/Tiem-Banh-Mi-Ba-Lan-tp-Nam-Dinh).
+
+## Hai bên đường ở vòng đầu
+
+Tuyến là bản đồ cách điệu phục vụ gameplay. Các vòng tiếp theo đổi thứ tự và có thể đảo bên.
+
+| Đoạn | Bên trái | Bên phải |
+| ---: | --- | --- |
+| 1 | Bánh mì patê Hà Bò | Bánh mì Ba Lan |
+| 2 | Tượng đài Trần Hưng Đạo | Golden Palace |
+| 3 | Phở bò Cụ Tặng | Xíu páo Hạnh Phúc |
+| 4 | Hồ Vị Xuyên | Bún móng giò Bảy Cầu Muối |
+| 5 | Cầu Thiên Trường | Qua cầu |
+| 6 | Lưu Gia Trang | Không Gian Dệt Xưa |
+| 7 | Cột cờ Nam Định | Kem xôi 132 Nguyễn Du |
+| 8 | Golden Palace | Cát Tường Coffee |
+| 9 | Làng cổ Dịch Diệp | Bánh bao Mi Ni |
+| 10 | Nhà hàng Chen 02 | Bún móng giò Bảy Cầu Muối |
+| 11 | Bến Đò Quan | Nem cuộn |
+| 12 | Cầu Đò Quan | Qua cầu |
+| 13 | Kem xôi 132 Nguyễn Du | Cơm niêu Kombo |
+| 14 | Tiểu học Trần Quốc Toản | Bánh mì patê Hà Bò |
+| 15 | Phở xíu chấm Quán Bé | Bánh bao Mi Ni |
+| 16 | THCS Trần Đăng Ninh | Highlands Coffee Nam Định Tower |
+| 17 | Nem cuộn | Bánh cuốn Nam Định |
+| 18 | THPT chuyên Lê Hồng Phong | Nhà hàng Nguyên Hằng |
+| 19 | Cầu Tân Phong | Qua cầu |
+| 20 | Tiệm nước Bát Bảo | Bánh mì patê Hà Bò |
+| 21 | Đại học Điều dưỡng Nam Định | Vườn Thiên Trường |
+| 22 | Highlands Coffee Nam Định Tower | Highlands Coffee Nguyễn Du |
+| 23 | Công viên Tức Mặc | Lion Coffee |
+| 24 | Cầu Nam Định | Qua cầu |
+| 25 | King BBQ Buffet | Nhà hàng Nguyên Hằng |
+| 26 | Vườn Thiên Trường | Sáu Nướng 2 |
+| 27 | Cầu Lạc Quần | Qua cầu |
+| 28 | Newland Coffee | Lion Coffee |
+
+## Tham chiếu địa danh
+
+- [Làng cổ Dịch Diệp và cầu đá cuốn](https://baoninhbinh.org.vn/lang-co-dich-diep-o-nam-dinh-duoc-vua-tu-duc-ban-tang-4-chu-thien-tuc-kha-phong-23120409530001.html)
+- [Bến Đò Quan](https://baoninhbinh.org.vn/bong-benh-qua-ben-do-quan-260625151438068.html)
+- [Cột cờ, tượng đài Trần Quốc Tuấn, hồ Vị Xuyên](https://namdinh.gov.vn/portal/VanBan/2024-11/8becf1b19098a9dd02.%20QC%20kem%20theo.pdf)
+- [Tiểu học Trần Quốc Toản và THCS Trần Đăng Ninh](https://thcstrandangninh.ninhbinh.edu.vn/wp-content/uploads/2026/05/5.-KH-tuy%E1%BB%83n-sinh-2026-2027-CT.pdf)
+- [THPT chuyên Lê Hồng Phong](https://thptchuyenlehongphong.ninhbinh.edu.vn/)
+- [Đại học Điều dưỡng Nam Định](https://new.ndun.edu.vn/)
+
+- [Cầu Thiên Trường qua sông Đào](https://baonamdinh.vn/tin-tuc-su-kien/202504/cau-moi-qua-song-dao-chinh-thuc-mang-ten-cau-thien-truong-0e92db3/)
+- [Cầu Đò Quan, Tân Phong, Nam Định và Lạc Quần](https://baonamdinh.vn/xa-hoi/202308/van-hanh-an-toan-he-thong-cau-cau-phao-trong-mua-mua-bao-07301a2/)

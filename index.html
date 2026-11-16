@@ -1,0 +1,1206 @@
+<!doctype html>
+<html lang="vi">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101827"><title>Đạp Xe Food Tour Nam Định</title>
+<style>
+*{box-sizing:border-box}body{margin:0;color:#f9e9cb;background:radial-gradient(ellipse at top,#223449,#101827 65%);font:15px system-ui,sans-serif;min-height:100svh}main{max-width:1120px;margin:auto;padding:24px 20px}header,.stats,footer{display:flex;align-items:center;justify-content:space-between;gap:12px}header{margin-bottom:18px}.brand{font-family:Georgia,serif;font-size:25px;font-weight:bold}small{color:#c8bba6}button{font:inherit;font-weight:700;cursor:pointer;border:1px solid #948270;border-radius:99px;color:#fff2da;background:#1a2435;padding:10px 15px}button:focus-visible{outline:3px solid #ffce7b;outline-offset:3px}.primary{background:#ffd28a;border-color:#ffd28a;color:#312217;padding:12px 27px}.stage{position:relative;overflow:hidden;border-radius:22px;border:1px solid #806b59;background:#192a43;box-shadow:0 20px 55px #060b14a0;touch-action:none}canvas{width:100%;height:auto;display:block;aspect-ratio:16/9}.stats{position:absolute;top:14px;left:14px;right:14px;pointer-events:none;align-items:flex-start}.stats .score{font-weight:800;color:#ffda8c}.stats span{padding:8px 13px;background:#101a29eb;border-radius:14px;border:1px solid #c6a87364}.overlay{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:linear-gradient(90deg,#0b1423ed 0%,#132034ba 50%,#13203420 100%);padding:16px}.intro{width:min(590px,100%);justify-self:start}.eyebrow{color:#ffd28a;font-size:12px;font-weight:800;letter-spacing:.19em}h1{font:700 clamp(29px,7vw,76px)/.96 Georgia,serif;margin:9px 0 12px;color:#fff0d8;text-shadow:0 4px #0d1a29}p{line-height:1.45;margin:0 0 14px}footer{margin-top:17px}.hide,[hidden]{display:none!important}dialog{width:min(540px,92vw);padding:24px;border-radius:20px;background:#182538;color:#fff1dc;border:1px solid #9e8261}dialog::backdrop{background:#080e17bc}ol{padding:0;line-height:1.4;display:grid;grid-template-columns:1fr 1fr;gap:12px;list-style:none}li{border:1px solid #a68c6358;border-radius:11px;padding:8px;min-width:0}li canvas{border-radius:7px;margin-bottom:6px}.toast{position:absolute;bottom:11%;left:50%;translate:-50% 0;background:#111d2aea;color:#ffd693;padding:8px 14px;border-radius:20px;text-align:center;pointer-events:none;white-space:nowrap}
+@media(max-width:600px){main{padding:12px 10px}header{margin-bottom:10px}.brand{font-size:19px}button{padding:7px 10px}.stage{border-radius:14px}canvas{aspect-ratio:4/3}.intro{width:100%}.overlay{background:#101827b8}.stats{top:6px;left:6px;right:6px;font-size:10px}.stats span{padding:4px 6px}.toast{bottom:6%;font-size:12px}footer{font-size:12px}}
+
+.game-controls,.pause-run{display:none}
+.running .pause-run,.paused .pause-run{display:inline-block}
+button{min-height:44px}body{overscroll-behavior:none}
+@media (max-width:720px) and (orientation:portrait){
+html,body{width:100%;height:100%;overflow:hidden}
+main{height:100vh;height:100dvh;width:100%;padding:0;display:flex;flex-direction:column}
+main>header{z-index:3;margin:0;padding:max(6px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) 5px max(8px,env(safe-area-inset-left));min-height:52px;background:#101827;gap:5px}
+main>header>div:last-child{display:flex;align-items:center;gap:4px}
+main>header button{font-size:11px;padding:6px 7px}
+.brand{font-size:clamp(12px,3.7vw,19px);white-space:nowrap}
+.stage{flex:1;min-height:0;border:0;border-radius:0;box-shadow:none}
+.stage canvas{position:absolute;width:100%;height:100%;aspect-ratio:auto}
+main>footer{margin:0;padding:7px max(10px,env(safe-area-inset-right)) max(7px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));background:#101827}
+footer small:first-child{max-width:72%}
+.game-controls{padding:6px 8px max(6px,env(safe-area-inset-bottom));grid-template-columns:1fr 1.6fr 1fr;gap:8px;background:#101827;flex:none;touch-action:manipulation}
+.running .game-controls{display:grid}.running footer{display:none}
+.game-controls button{min-height:48px;font-size:17px}
+.game-controls #jump-control{background:#ffd28a;color:#382518}
+.intro h1{font-size:clamp(38px,12vw,65px)}
+.overlay{background:linear-gradient(180deg,#10182755,#101827da 36%,#101827e0 67%,#10182710)}
+.stats{gap:5px}.stats span{padding:6px 7px;font-size:11px}
+.stats .score{font-size:13px}.stats #place{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.toast{bottom:8%;max-width:94%;white-space:normal}
+}
+dialog{max-height:85dvh;overflow:auto}.journal-tabs{display:flex;gap:6px}.journal-tabs [aria-pressed="true"]{background:#ffd28a;color:#382518}.review-list{display:block}.review-list li{margin:6px 0;display:flex;justify-content:space-between;gap:8px}.review-list strong{white-space:nowrap}.source-link{color:#ffcf84}.stamped{border-color:#bd935a88}.journal-kind{color:#c1ac92;font-size:11px}
+@media (min-width:721px){.overlay{background:linear-gradient(90deg,#0b1423ed 0%,#132034ba 39%,#13203422 64%,#1320340a 100%)}.intro{width:min(465px,47%);padding-inline:10px}}
+
+.mode-picker{border:0;padding:0;margin:0 auto 15px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.mode-picker legend{font-size:12px;margin-bottom:6px;color:#e9cd9d}
+.mode-picker button{padding:8px 13px;font-size:13px}
+.mode-picker [aria-pressed="true"]{background:#ffd28a;color:#2b201a;border-color:#ffd28a}
+#mode-note{font-size:12px;color:#e7d7bb}.garage-trigger{color:#ffda99}
+#garage{width:min(550px,94vw);max-height:85dvh;overflow:auto}
+#garage header{position:sticky;top:-24px;padding:9px 0;background:#182538;z-index:1}
+.shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:8px 0 18px}
+.shop-item{min-width:0;border:1px solid #5a6d82;border-radius:12px;padding:11px;display:grid;align-content:space-between;gap:8px;background:#1b2e44}
+.shop-item strong{font-size:14px}.shop-item button{font-size:12px;padding:7px}
+.shop-item.equipped{border-color:#d9ac70}.shop-item button:disabled{opacity:.68;cursor:default}
+#bank{color:#ffda99;font-weight:bold;margin-bottom:5px}#shop-message{min-height:1.5em;color:#f7c786;font-size:13px}
+@media(max-width:720px){main>header>div:last-child{flex-wrap:wrap;justify-content:flex-end}.mode-picker button{padding:6px 10px}.shop-grid{gap:7px}.shop-item{padding:9px}}
+</style></head>
+<body><main>
+<header><div class="brand">Đạp Xe Food Tour</div><div><button id="sound" aria-pressed="true">Âm thanh bật</button> <button class="pause-run" id="pause-run" aria-label="Tạm dừng">Ⅱ</button><button id="book">Sổ Food Tour</button><button id="garage-open" class="garage-trigger">Gara</button></div></header>
+<div class="stage" id="stage">
+<canvas tabindex="0" id="world" aria-label="Đường đạp xe qua phố và cầu Nam Định"></canvas>
+<div class="stats" id="stats" hidden><span id="place"></span><span id="score" class="score"></span><span id="flies"></span></div>
+<div id="notice" class="toast" role="status" hidden></div>
+<div id="overlay" class="overlay"><div class="intro"><div class="eyebrow">ĐẠP XE KHÁM PHÁ</div><h1 id="heading">Food Tour<br>Nam Định</h1><p id="summary">Đeo ba lô, đạp qua phố hàng ăn và những cây cầu Thành Nam.</p><fieldset class="mode-picker" id="mode-picker"><legend>Chọn độ khó</legend><button type="button" data-mode="normal">Thường</button><button type="button" data-mode="hard">Khó</button><button type="button" data-mode="expert">Cực khó</button></fieldset><p id="mode-note"></p><button class="primary" id="play">Bắt đầu food tour</button></div></div>
+</div>
+<nav class="game-controls" aria-label="Điều khiển"><button id="left-control" aria-label="Sang trái">←</button><button id="jump-control">Nhảy</button><button id="right-control" aria-label="Sang phải">→</button></nav><footer><small>Vuốt ngang hoặc ← → để đổi làn. Chạm màn chơi hoặc Space để nhảy.</small><small id="record"></small></footer>
+<dialog id="journal"><header><strong>Sổ Food Tour</strong><form method="dialog"><button>Đóng</button></form></header><p id="collection"></p><div class="journal-tabs"><button id="stamps-tab" aria-pressed="true">Đã khám phá</button><button id="reviews-tab" aria-pressed="false">Quán nhiều đánh giá</button></div><ol id="entries"></ol></dialog>
+<dialog id="garage"><header><strong>Gara Food Tour</strong><form method="dialog"><button>Đóng</button></form></header><p id="bank"></p><p id="shop-message" role="status"></p><h2>Phương tiện</h2><div class="shop-grid" id="vehicles"></div><h2>Pet đồng hành</h2><div class="shop-grid" id="pets"></div></dialog>
+</main>
+<script>
+'use strict';
+const get = id => document.getElementById(id);
+const canvas = get('world');
+let pen = canvas.getContext('2d');
+const places = [
+  {name:'Bánh mì Ba Lan', sign:'BÁNH MÌ BA LAN', food:'bread', hue:'#a34a37', reviews:28, source:'Restaurant Guru'},
+  {name:'Bánh bao Mi Ni', sign:'BÁNH BAO MI NI', food:'bao', hue:'#467471'},
+  {name:'Tượng đài Trần Hưng Đạo', landmark:'statue'},
+  {name:'Nem cuộn', sign:'NEM CUỘN', food:'roll', hue:'#8e4937'},
+  {name:'Bánh cuốn Nam Định', sign:'BÁNH CUỐN NAM ĐỊNH', food:'rice', hue:'#536b7c'},
+  {name:'Tiệm nước Bát Bảo', sign:'BÁT BẢO', food:'tea', hue:'#526a4a'},
+  {name:'Cột cờ Nam Định', landmark:'tower'},
+  {name:'Công viên Tức Mặc', landmark:'park'},
+  {"name": "Cát Tường Coffee", "sign": "CÁT TƯỜNG COFFEE", "food": "tea", "hue": "#236762", "reviews": 1867},
+  {"name": "Bánh mì patê Hà Bò", "sign": "BÁNH MÌ PATÊ HÀ BÒ", "food": "bread", "hue": "#a34a37", "reviews": 1447},
+  {"name": "Lưu Gia Trang", "sign": "LƯU GIA TRANG", "food": "rice", "hue": "#596e54", "reviews": 1052},
+  {"name": "Không Gian Dệt Xưa", "sign": "KHÔNG GIAN DỆT XƯA", "food": "rice", "hue": "#805244", "reviews": 905},
+  {"name": "Golden Palace", "sign": "GOLDEN PALACE", "food": "rice", "hue": "#8f6847", "reviews": 545},
+  {"name": "Phở bò Cụ Tặng", "sign": "PHỞ BÒ CỤ TẶNG", "food": "noodle", "hue": "#874246", "reviews": 525},
+  {"name": "Nhà hàng Chen 02", "sign": "NHÀ HÀNG CHEN 02", "food": "roll", "hue": "#855841", "reviews": 336},
+  {"name": "Bún móng giò Bảy Cầu Muối", "sign": "BÚN MÓNG GIÒ BẢY CẦU MUỐI", "food": "noodle", "hue": "#536a52", "reviews": 332},
+  {"name": "Xíu páo Hạnh Phúc", "sign": "XÍU PÁO HẠNH PHÚC", "food": "bao", "hue": "#ac603f", "reviews": 265},
+  {"name": "Kem xôi 132 Nguyễn Du", "sign": "KEM XÔI 132 NGUYỄN DU", "food": "dessert", "hue": "#644c7d", "reviews": 243},
+  {"name": "Cơm niêu Kombo", "sign": "CƠM NIÊU KOMBO", "food": "rice", "hue": "#8b5737", "reviews": 229},
+  {"name": "Phở xíu chấm Quán Bé", "sign": "PHỞ XÍU CHẤM QUÁN BÉ", "food": "noodle", "hue": "#476267", "reviews": 215},
+  {"name": "Làng cổ Dịch Diệp", "landmark": "village", "detail": "Cổng làng hướng Nam và cầu đá cuốn."},
+  {"name": "Bến Đò Quan", "landmark": "wharf", "detail": "Một nhịp chậm bên sông Đào."},
+  {"name": "Hồ Vị Xuyên", "landmark": "lake", "detail": "Mặt hồ, lan can và đèn quanh bờ."},
+  {"name": "Tiểu học Trần Quốc Toản", "landmark": "primary", "detail": "Điểm dừng cấp 1."},
+  {"name": "THCS Trần Đăng Ninh", "landmark": "middle", "detail": "Điểm dừng cấp 2."},
+  {"name": "THPT chuyên Lê Hồng Phong", "landmark": "high", "detail": "Điểm dừng cấp 3."},
+  {"name": "Đại học Điều dưỡng Nam Định", "landmark": "college", "detail": "Điểm dừng đại học."},
+  {name:'Highlands Coffee Nam Định Tower',sign:'HIGHLANDS · NAM ĐỊNH TOWER',food:'tea',hue:'#934b45',reviews:446},
+  {name:'Highlands Coffee Nguyễn Du',sign:'HIGHLANDS · NGUYỄN DU',food:'tea',hue:'#8a413d',reviews:390},
+  {name:'King BBQ Buffet',sign:'KING BBQ BUFFET',food:'rice',hue:'#97534d',reviews:258},
+  {name:'Nhà hàng Nguyên Hằng',sign:'NHÀ HÀNG NGUYÊN HẰNG',food:'rice',hue:'#656d54',reviews:213},
+  {name:'Vườn Thiên Trường',sign:'VƯỜN THIÊN TRƯỜNG',food:'rice',hue:'#55745f',reviews:203},
+  {name:'Sáu Nướng 2',sign:'SÁU NƯỚNG 2',food:'roll',hue:'#9c493d',reviews:194},
+  {name:'Newland Coffee',sign:'NEWLAND COFFEE',food:'tea',hue:'#535f69',reviews:193},
+  {name:'Lion Coffee',sign:'LION COFFEE',food:'tea',hue:'#655079',reviews:192},
+  {name:'Cầu Đò Quan',landmark:'bridge',bridge:'urban',detail:'Đạp xe qua sông Đào, gần đoạn Bến Đò Quan.'},
+  {name:'Cầu Thiên Trường',landmark:'bridge',bridge:'cable',detail:'Nhịp dây văng qua sông Đào.'},
+  {name:'Cầu Tân Phong',landmark:'bridge',bridge:'span',detail:'Một nhịp qua sông Đào.'},
+  {name:'Cầu Nam Định',landmark:'bridge',bridge:'broad',detail:'Đoạn vượt sông Đào.'},
+  {name:'Cầu Lạc Quần',landmark:'bridge',bridge:'river',detail:'Đoạn vượt sông Ninh Cơ.'}
+];
+const load = (key, fallback) => {try {return JSON.parse(localStorage.getItem(key)) ?? fallback} catch {return fallback}};
+const save = (key,value) => {try {localStorage.setItem(key,JSON.stringify(value))} catch {}};
+const modes = {
+  normal:{name:'Thường',speed:17,ramp:.012,boost:15,rows:4,spacing:21,reward:1},
+  hard:{name:'Khó',speed:22,ramp:.014,boost:17,rows:5,spacing:17,reward:2},
+  expert:{name:'Cực khó',speed:26,ramp:.017,boost:20,rows:6,spacing:15,reward:3}
+};
+const catalog = {
+  vehicle:[
+    {id:'bike',name:'Xe đạp học sinh',price:0,icon:'🚲'},
+    {id:'scooter',name:'Xe máy điện',price:120,icon:'🛵'},
+    {id:'car',name:'Ô tô mini',price:280,icon:'🚗'}
+  ],
+  pet:[
+    {id:'none',name:'Không mang pet',price:0,icon:'—'},
+    {id:'parrot',name:'Vẹt cầu vồng',price:80,icon:'🦜'},
+    {id:'dog',name:'Cún vàng',price:100,icon:'🐕'},
+    {id:'cat',name:'Mèo tam thể',price:95,icon:'🐈'}
+  ]
+};
+const progress = load('food-tour-garage-v1',{}) || {};
+let wallet = Math.max(0,Math.floor(Number(progress.wallet)||0));
+const owned = new Set(['bike','none',...(Array.isArray(progress.owned)?progress.owned:[])]);
+const equipped = Object.fromEntries(Object.entries(catalog).map(([kind,items])=>[
+  kind,items.find(item=>item.id===progress[kind]&&owned.has(item.id))?.id ?? items[0].id
+]));
+const records={normal:load('cun-best-3d',0),hard:0,expert:0,...progress.records};
+let selectedMode=Object.hasOwn(modes,progress.mode)?progress.mode:'normal', runMode=selectedMode;
+let tripCoins=0, savedTripCoins=0, distanceReward=0, petX=0;
+function saveProgress(){
+  save('food-tour-garage-v1',{wallet,owned:[...owned],...equipped,records,mode:selectedMode});
+}
+function bankTrip(){
+  if(tripCoins===savedTripCoins)return;
+  wallet+=tripCoins-savedTripCoins;
+  savedTripCoins=tripCoins;saveProgress();
+}
+function earn(base){
+  tripCoins+=base*modes[runMode].reward;
+  if(tripCoins-savedTripCoins>=12)bankTrip();
+}
+let unlocked = new Set(load('cun-book',[])), sound = load('cun-sound',true);
+let context, master, step=0, nextNote=0;
+function enableAudio(){
+  if(!sound)return;
+  const Audio = window.AudioContext || window.webkitAudioContext;
+  if(!Audio)return;
+  if(!context){context=new Audio();master=context.createGain();master.gain.value=.47;master.connect(context.destination)}
+  master.gain.value=.47;
+  context.resume().catch(()=>{});
+}
+function tone(freq,length,volume,type='sine',delay=0,end=freq){
+  if(!sound || context?.state!=='running')return;
+  const at=context.currentTime+delay, osc=context.createOscillator(), amp=context.createGain();
+  osc.type=type;osc.frequency.setValueAtTime(freq,at);osc.frequency.exponentialRampToValueAtTime(end,at+length);
+  amp.gain.setValueAtTime(.001,at);amp.gain.exponentialRampToValueAtTime(volume,at+.012);amp.gain.exponentialRampToValueAtTime(.001,at+length);
+  osc.connect(amp);amp.connect(master);osc.start(at);osc.stop(at+length+.02);
+}
+function effect(kind){
+  if(kind==='jump')tone(270,.16,.08,'triangle',0,640);
+  if(kind==='fly')tone(1046,.15,.06);
+  if(kind==='light'){
+    [523,659,784,1046].forEach((f,i)=>tone(f,.35,.12,'sine',i*.07));
+    tone(120,.27,.32,'sine',0,49);
+  }
+  if(kind==='crash')tone(160,.38,.2,'triangle',0,51);
+}
+const tune=[392,0,440,523,587,523,440,0,392,330,392,440,523,0,440,0];
+function music(){
+  if(!sound || context?.state!=='running' || context.currentTime<nextNote)return;
+  nextNote=context.currentTime+.33;
+  const note=tune[step++%tune.length];
+  if(note)tone(note,.40,.035,'triangle');
+  if(step%4===1)tone(98,.28,.065,'sine',0,51);
+}
+const CHUNK = 102, PLAYER_Z = 6.4, LANES = [-2.35,0,2.35];
+let W=960,H=540,scale=1,quality=1,state='ready',distance=0,y=0,vy=0,lane=1,playerX=0,points=0,bonus=0,lit=0,gathered=0,buffered=0,previous=0,noticeUntil=0,lean=0,rideTime=0;
+const chunks=new Map(), sparks=[];
+function resize(){
+  const dpr=Math.min(window.devicePixelRatio||1,2), w=canvas.clientWidth,h=canvas.clientHeight;
+  if(!w||!h)return;
+  const ratio=Math.min(dpr,Math.sqrt(830000/(w*h)))*quality;
+  const width=Math.max(1,Math.round(w*ratio)), height=Math.max(1,Math.round(h*ratio));
+  if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height}
+  H=540;W=h?w/h*H:960;scale=canvas.height/H;
+}
+new ResizeObserver(resize).observe(canvas);resize();
+function record(){get('record').textContent=modes[selectedMode].name+' · Kỷ lục '+format(records[selectedMode]||0)+' điểm'}
+function audioLabel(){get('sound').textContent=sound?'Âm thanh bật':'Âm thanh tắt';get('sound').setAttribute('aria-pressed',sound)}
+audioLabel();
+get('sound').onclick=()=>{sound=!sound;save('cun-sound',sound);audioLabel();if(sound){enableAudio();effect('fly')}else if(master)master.gain.value=0};
+function fill(color,x,y,w,h){pen.fillStyle=color;pen.fillRect(x,y,w,h)}
+function line(color,width,points){
+  pen.strokeStyle=color;pen.lineWidth=width;pen.lineCap='round';pen.lineJoin='round';pen.beginPath();
+  points.forEach(([x,y],i)=>i?pen.lineTo(x,y):pen.moveTo(x,y));pen.stroke();
+}
+function path(color,points){pen.fillStyle=color;pen.beginPath();points.forEach(([x,y],i)=>i?pen.lineTo(x,y):pen.moveTo(x,y));pen.closePath();pen.fill()}
+function oval(color,x,y,rx,ry,angle=0){pen.fillStyle=color;pen.beginPath();pen.ellipse(x,y,rx,ry,angle,0,Math.PI*2);pen.fill()}
+function label(string,x,y,size,color='#ffe4aa',align='center'){
+  pen.font='700 '+size+'px system-ui';pen.fillStyle=color;pen.textAlign=align;pen.fillText(string,x,y);
+}
+const glowTextures=new Map();
+function glow(x,y,r,color='255,174,80',alpha=.6){
+  if(r<.6||x+r<0||x-r>W||y+r<0||y-r>H)return;
+  let texture=glowTextures.get(color);
+  if(!texture){
+    texture=document.createElement('canvas');
+    texture.width=texture.height=64;
+    const ctx=texture.getContext('2d');
+    const haze=ctx.createRadialGradient(32,32,1,32,32,32);
+    haze.addColorStop(0,'rgba('+color+',1)');
+    haze.addColorStop(1,'rgba('+color+',0)');
+    ctx.fillStyle=haze;ctx.fillRect(0,0,64,64);
+    glowTextures.set(color,texture);
+  }
+  pen.globalAlpha=alpha;
+  pen.drawImage(texture,x-r,y-r,r*2,r*2);
+  pen.globalAlpha=1;
+}
+function rnd(i){const n=Math.sin(i*12.9898+4.51)*43758.5453;return n-Math.floor(n)}
+const numberFormat = new Intl.NumberFormat('vi-VN');
+function format(n){return numberFormat.format(n)}
+record();
+function notify(msg){get('notice').textContent=msg;get('notice').hidden=false;noticeUntil=performance.now()+2100}
+// Each strip pairs two named storefronts. Landmarks interrupt the street at fixed intervals.
+const streetPairs=[[9,0],[13,16],[10,11],[12,8],[14,15],[17,18],[19,1],[3,4],[5,9],[27,28],[29,30],[31,32],[33,34]];
+const stops=[2,22,6,20,21,23,24,25,26,7];
+const itinerary=[];
+for(let i=0;i<streetPairs.length;i++){
+  itinerary.push(streetPairs[i]);
+  if(i<stops.length)itinerary.push([stops[i],streetPairs[(i+3)%streetPairs.length][i%2]]);
+  const crossing={1:36,4:35,7:37,9:38,11:39}[i];
+  if(crossing)itinerary.push([crossing]);
+}
+function route(index){
+  const lap=Math.floor(index/itinerary.length),step=index%itinerary.length;
+  if(!lap)return itinerary[step];
+  const swap=Math.floor(rnd(lap*171)*itinerary.length);
+  const pair=itinerary[(step+swap)%itinerary.length];
+  return lap%2?pair.slice().reverse():pair;
+}
+function segment(index){
+  if(!chunks.has(index)){
+    const rules=modes[runMode];
+    const ids=route(index), start=index*CHUNK, obstacles=[], flies=[];
+    const sides=ids.map((id,side)=>({id,start,side,lit:false}));
+    const landmark=ids.some(id=>places[id].landmark), bridge=places[ids[0]].bridge;
+    for(let row=0;row<rules.rows;row++){
+      if((landmark&&row===1)||(bridge&&(row===0||(runMode==='normal'&&row===2))))continue;
+      const z=start+19+row*rules.spacing;
+      const seed=index*23+row+18;
+      const safe=index===0&&row===0?1:Math.floor(rnd(seed)*3);
+      for(let j=0;j<3;j++){
+        if(j!==safe && (runMode!=='normal' || index>1 || j===(safe+1)%3 || row%2===1)){
+          obstacles.push({x:LANES[j],z,kind:(index+row+j)%3,passed:false});
+        }
+      }
+      for(let j=0;j<4;j++)flies.push({x:LANES[safe],z:runMode==='normal'?z-6+j*3.1:z-7+j*2.3,taken:false});
+    }
+    chunks.set(index,{sides,start,obstacles,flies,collected:0,bridge});
+  }
+  return chunks.get(index);
+}
+function reveal(c){
+  if(c.lit)return;
+  c.lit=true;
+  const p=places[c.id], prize=p.landmark?100:150;
+  if(!p.landmark){lit++;earn(4)}
+  bonus+=prize;
+  unlocked.add(c.id);save('cun-book',[...unlocked]);
+  notify(p.name+'  ·  +'+prize);
+  effect('light');
+  for(let i=0;i<16;i++)sparks.push({x:(c.side?1:-1)*(3+rnd(i)*4),y:.4+rnd(i+20)*2,z:distance+14+rnd(i+72)*15,life:.45+rnd(i+40)});
+}
+let cameraY=3.65, horizon=.34, cameraX=0;
+let focal=420, faces=[];
+function project(x,y,z){
+  const d=focal/z;
+  return [W/2+(x-cameraX)*d,H*horizon+(cameraY-y)*d];
+}
+function face(color,vertices,seam=false){
+  let depth=0;
+  for(const vertex of vertices){
+    if(vertex[2]<.9)return;
+    depth+=vertex[2];
+  }
+  faces.push({color,vertices,seam,z:depth/vertices.length});
+}
+function renderFaces(){
+  faces.sort((a,b)=>b.z-a.z);
+  const cx=W/2, cy=H*horizon;
+  for(const f of faces){
+    let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+    const corners=projectedCorners;
+    let i=0;
+    for(const [x,y,z] of f.vertices){
+      const d=focal/z, px=cx+(x-cameraX)*d, py=cy+(cameraY-y)*d;
+      corners[i++]=px;corners[i++]=py;
+      minX=Math.min(minX,px);maxX=Math.max(maxX,px);
+      minY=Math.min(minY,py);maxY=Math.max(maxY,py);
+    }
+    if(maxX<0||minX>W||maxY<0||minY>H||maxX-minX<.36||maxY-minY<.36)continue;
+    pen.fillStyle=f.color;pen.beginPath();pen.moveTo(corners[0],corners[1]);
+    for(let j=2;j<i;j+=2)pen.lineTo(corners[j],corners[j+1]);
+    pen.closePath();pen.fill();
+    if(f.seam){pen.strokeStyle=f.color;pen.lineWidth=.66;pen.stroke()}
+  }
+  faces.length=0;
+}
+const projectedCorners=[];
+function cube(x,y,z,w,h,d,colors){
+  const [a,b,c]=colors,l=x-w/2,r=x+w/2,n=z-d/2,f=z+d/2,t=y+h;
+  if(n<.9)return;
+  const A=[l,y,n],B=[r,y,n],C=[r,t,n],D=[l,t,n],E=[l,y,f],F=[r,y,f],G=[r,t,f],I=[l,t,f];
+  if(x>cameraX)face(b,[A,E,I,D]);
+  if(x<cameraX)face(b,[B,C,G,F]);
+  if(t<cameraY)face(c,[D,C,G,I]);
+  face(a,[A,B,C,D]);
+}
+function roof(x,y,z,w,d,colors){
+  const [a,b]=colors,l=x-w/2,r=x+w/2,n=z-d/2,f=z+d/2;
+  if(n<.9)return;
+  const ridge=y+w*.18;
+  face(a,[[l,y,n],[r,y,n],[x,ridge,n]]);
+  if(x>cameraX)face(b,[[l,y,n],[x,ridge,n],[x,ridge,f],[l,y,f]]);
+  else face(b,[[r,y,n],[r,y,f],[x,ridge,f],[x,ridge,n]]);
+  for(let i=1;i<(z<48?8:2);i++){
+    const yy=y+(ridge-y)*i/8, edge=w/2*(1-i/8);
+    const side=x>0?-1:1, xx=x+side*edge;
+    face('#a7695745',[[xx,yy,n],[xx,yy,f],[xx-side*.03,yy+.018,f],[xx-side*.03,yy+.018,n]]);
+  }
+}
+function quad(color,x1,x2,z1,z2,y=0){
+  if(z2<=1)return;
+  z1=Math.max(1,z1);
+  path(color,[project(x1,y,z1),project(x2,y,z1),project(x2,y,z2),project(x1,y,z2)]);
+}
+function ellipsoid(x,y,z,rx,ry,rz,palette){
+  const rings=z>28?3:z<10?5:4, sides=z>28?6:z<10?10:8;
+  const mesh=Array.from({length:rings+1},(_,j)=>{
+    const phi=(j/rings-.5)*Math.PI;
+    return Array.from({length:sides},(_,i)=>{
+      const theta=i*2*Math.PI/sides;
+      return [x+rx*Math.cos(phi)*Math.cos(theta),y+ry*Math.sin(phi),z+rz*Math.cos(phi)*Math.sin(theta)];
+    });
+  });
+  for(let j=0;j<rings;j++)for(let i=0;i<sides;i++){
+    const theta=(i+.5)*2*Math.PI/sides, next=(i+1)%sides;
+    const visible=(cameraX-x)*Math.cos(theta)-z*Math.sin(theta);
+    if(visible<-.35&&j!==0&&j!==rings-1)continue;
+    const shade=.49+.24*Math.cos(theta+1.1)+.21*(j/(rings-1)-.5);
+    const color=z<10?litTone(palette[0],.67+shade*.85):palette[Math.max(0,Math.min(palette.length-1,Math.round(shade*(palette.length-1))))];
+    face(color,[mesh[j][i],mesh[j][next],mesh[j+1][next],mesh[j+1][i]],z<10);
+  }
+}
+const brick=['#76505a','#533e4a','#99716c'];
+const slate=['#435569','#334456','#5a6875'];
+function lantern3(x,y,z,on=true){
+  if(z<1)return;
+  cube(x,y+.24,z,.035,.36,.035,['#8f6c61','#705355','#ad8a77']);
+  ellipsoid(x,y,z,.19,.26,.19,on?['#fbc469','#ee9750','#ffdaa0']:['#94645b','#744b53','#ae7865']);
+}
+function tree3(x,z,h){
+  cube(x,0,z,.3,h,.31,['#59474d','#41373f','#795b58']);
+  ellipsoid(x,h,z,1.43,1.15,1.25,['#2c625c','#244c4e','#397162','#32625b']);
+  ellipsoid(x+.52,h-.37,z-.35,1.06,.81,.95,['#30645d','#24534f','#3b7669']);
+}
+function housing(x,z,i,p){
+  const w=2.9+rnd(i+14)*1.5, h=2.7+rnd(i+30)*1.55;
+  const walls=i%2===0?brick:slate, roofColors=i%3===0?['#9f5350','#6e4249']:['#565366','#3f4255'];
+  cube(x,0,z,w,h,5,walls);
+  roof(x,h,z,w+.35,5.65,roofColors);
+  const inner=x+(x<0?w/2:-w/2), signX=inner+(x<0?.03:-.03);
+  const light=p?'#ffbd67':i%3===0?'#ad7f65':'#6b7080';
+  for(let j=z>46?0:-1;j<=(z>46?0:1);j++){
+    cube(signX,.65,z+j*1.38,.08,1,1.04,[light,light,'#dbaf7a']);
+    cube(signX,1.67,z+j*1.38,.14,.095,1.21,['#a28678','#a28678','#b99c84']);
+    cube(signX,.55,z+j*1.38,.14,.09,1.2,['#aa8378','#aa8378','#c19e89']);
+  }
+  const frame=['#bc947c','#886859','#d5af82'];
+  cube(x,1.14,z-2.53,.86,1.25,.09,frame);
+  cube(x,1.2,z-2.60,.67,1.13,.09,[light,'#a79887','#c0ad91']);
+  if(z<30&&quality>.74){
+    for(const yy of [.42,h*.78,h-.12])cube(x,yy,z-2.54,w+.13,.075,.17,frame);
+    cube(x,1.16,z-2.66,.045,1.18,.05,frame);
+    cube(x,1.72,z-2.67,.67,.045,.056,frame);
+    const wallZ=z-2.505;
+    for(let row=0;row<6;row++){
+      const yy=.55+row*.15;
+      face('#b8a38b30',[[x-w/2,yy,wallZ],[x+w/2,yy,wallZ],[x+w/2,yy+.015,wallZ],[x-w/2,yy+.015,wallZ]]);
+    }
+  }
+  lantern3(inner+(x<0?.16:-.16),1.95,z-2.05,!!p||i%3===0);
+}
+function templeGate(x,z,on){
+  const stone=['#876960','#615057','#b08b78'];
+  for(const side of [-1,1])cube(x+side*1.41,0,z,.36,3,.4,stone);
+  cube(x,2.48,z,3.45,.54,.49,['#9b5351','#65414a','#bf6e61']);
+  roof(x,3.02,z,3.82,1.25,['#a85449','#813d41']);
+  lantern3(x,2.26,z-.35,on);
+}
+function setpiece(c,time){
+  const p=places[c.id], z=c.start+(p.landmark?44:36)-distance;
+  const x=c.side===0?-5.75:5.75;
+  if(z<2.5||z>160)return;
+  const stone=['#a48373','#756367','#c2a08a'];
+  if(p.landmark==='statue'){
+    cube(x,0,z,4.15,.31,3.4,stone);cube(x,.31,z,2.85,.39,2.55,stone);cube(x,.7,z,1.9,1.15,1.55,stone);
+    const bronze=['#8a7957','#71634f','#b0a374','#a7936a'];
+    ellipsoid(x,2.56,z,.55,.82,.34,bronze);
+    ellipsoid(x,3.49,z,.28,.34,.26,bronze);
+    cube(x,3.72,z,.63,.21,.45,bronze);
+    ellipsoid(x-.59,2.79,z-.03,.42,.14,.17,bronze);
+    cube(x+.39,1.83,z,.1,1.41,.15,bronze);
+    for(const j of [-2.7,2.7])lantern3(x+j,2.54,z,c.lit);
+  }else if(p.landmark==='tower'){
+    cube(x,0,z,3.95,.32,3.5,stone);cube(x,.32,z,3,.48,2.75,stone);
+    cube(x,.8,z,1.78,3.4,1.62,stone);cube(x,4.2,z,2.06,.25,1.89,stone);cube(x,4.45,z,.06,1.55,.06,['#d1bfa4','#a18c81','#eacda4']);
+    cube(x,.83,z-.82,.52,1.05,.04,['#453842','#453842','#453842']);
+    const flap=Math.sin(time*5)*.22;
+    face('#d84a47',[[x,5.9,z-.04],[x+1,5.8,z+flap],[x+1,5.19,z+flap],[x,5.3,z-.04]]);
+  }else if(p.landmark==='village'){
+    const masonry=['#835a51','#64494b','#c08c70'];
+    cube(x,0,z+1,5.2,.24,7,stone);
+    for(const j of [-1.55,1.55])cube(x+j,.24,z,1.01,3.35,.98,masonry);
+    for(let j=0;j<10;j++){
+      const a=j*Math.PI/10,b=(j+1)*Math.PI/10;
+      face(masonry[j%2],[[x+Math.cos(a)*1.11,2.03+Math.sin(a)*1.11,z-.52],
+        [x+Math.cos(b)*1.11,2.03+Math.sin(b)*1.11,z-.52],
+        [x+Math.cos(b)*1.69,2.03+Math.sin(b)*1.69,z-.52],
+        [x+Math.cos(a)*1.69,2.03+Math.sin(a)*1.69,z-.52]]);
+    }
+    roof(x,3.6,z,4.65,2.05,['#a85644','#793f43']);
+    for(const j of [-2.33,2.33])cube(x+j,.23,z-2.65,.16,.44,3.7,stone);
+    tree3(x+2.2,z+3,2.9);lantern3(x,2.93,z-.62,c.lit);
+  }else if(p.landmark==='lake'||p.landmark==='wharf'){
+    waterside(p,x,z,time);
+  }else if(p.landmark==='park'){
+    for(let j=0;j<5;j++)tree3(x+(j%2?1.9:-1.8),z+5+j*2.8,2.1+rnd(j)*.75);
+    templeGate(x,z,c.lit);
+    for(let j=1;j<5;j++)lantern3(x+(j%2?1:-1)*1.6,1.86,z+2.8*j,true);
+  }else if(p.landmark){
+    school(p,x,z);
+  }else{
+    const wall=[p.hue,litTone(p.hue,.63),litTone(p.hue,1.08)];
+    const trim=['#d8af82','#956e64','#edc59a'];
+    cube(x,0,z,3.7,3.48,3.6,wall);
+    roof(x,3.48,z,4.05,4.2,['#a64f48','#733d45']);
+    cube(x,3.39,z-1.90,3.81,.14,.19,trim);
+    cube(x,2.61,z-1.91,3.77,.09,.14,trim);
+    for(const edge of [-1.76,1.76])cube(x+edge,2.64,z-1.84,.15,.77,.12,trim);
+    for(let i=0;i<13;i++){
+      const at=x-1.76+i*.285;
+      cube(at,3.365,z-1.97,.055,.066,.062,['#ebcb9d','#af826a','#ffe4af']);
+    }
+    for(const col of [-1.12,0,1.12]){
+      cube(x+col,2.75,z-1.83,.69,.42,.10,['#c79b69','#775955','#e6bd81']);
+      cube(x+col,2.8,z-1.89,.49,.31,.07,['#58434a','#5d4548','#b58569']);
+      cube(x+col,2.81,z-1.934,.037,.31,.024,trim);
+      cube(x+col,2.955,z-1.934,.50,.033,.024,trim);
+    }
+    const stripe=c.side?['#587c72','#42645d','#789c87']:['#ad5045','#743a42','#c7795f'];
+    for(let j=0;j<10;j++){
+      const l=x-1.85+j*.37,r=l+.37;
+      face(j%2?'#e1bb87':stripe[2],[[l,2.03,z-1.8],[r,2.03,z-1.8],[r,1.77,z-2.75],[l,1.77,z-2.75]]);
+      cube(l+.185,1.66,z-2.75,.37,.13,.049,j%2?['#e1bb87','#af936d','#f6cc96']:stripe);
+    }
+    for(const j of [-1.63,1.63])cube(x+j,0,z-2.61,.085,1.8,.085,['#816456','#63483f','#b49071']);
+    cube(x,0,z-2.67,3.16,.13,1.67,['#75625d','#62514c','#947b6c']);
+    for(const j of [-1.03,1.03]){
+      cube(x+j,.17,z-3,.41,.32,.39,['#944f41','#753c37','#ba7152']);
+      cube(x+j,.47,z-3,.47,.08,.44,['#a86b50','#845044','#d39365']);
+    }
+    cube(x,1.87,z-1.83,3.42,.67,.12,['#402e39','#3c2b33','#d09161']);
+    const golden=c.lit?['#ffbd67','#db955a','#ffd898']:['#906e69','#73535b','#9c756d'];
+    cube(x,.12,z-1.82,2.84,1.58,.04,golden);
+    cube(x,.59,z-2.01,2.95,.18,.63,['#823f39','#693c41','#cf865c']);
+    const rail=['#c18765','#8d5f54','#f0bb80'];
+    for(const side of [-1,1])cube(x+side*1.38,.77,z-2.337,.045,.5,.043,rail);
+    cube(x,1.27,z-2.337,2.82,.045,.045,rail);
+    face(c.lit?'#fff0bb28':'#add3de1c',[[x-1.37,.79,z-2.37],[x+1.37,.79,z-2.37],[x+1.37,1.28,z-2.37],[x-1.37,1.28,z-2.37]]);
+    for(const side of [-1,1]){
+      const planter=x+side*1.67;
+      cube(planter,.12,z-3.15,.31,.26,.31,['#ae6d52','#83514a','#cb936c']);
+      ellipsoid(planter,.43,z-3.15,.19,.21,.16,['#55957b','#719f82','#a2b887']);
+    }
+    const display={
+      bread:['#eb9f54','#c7743b','#f5b76c'],
+      bao:['#ffe9bf','#d6b69a','#f6dfae'],
+      roll:['#d4bb7a','#b78b57','#dfce9f'],
+      rice:['#f1dfbf','#a9b9a5','#dbc9ae'],
+      tea:['#bd774d','#e8bc83','#ffd193'],
+      noodle:['#faf0d5','#bebac7','#ffca83'],
+      dessert:['#f4cd98','#c298bf','#f2e0bc']
+    };
+    for(let j=-2;j<=2;j++)ellipsoid(x+j*.43,.87,z-2.19,.18,['tea','noodle','dessert'].includes(p.food)?.15:.095,.12,display[p.food]);
+    if(c.lit){
+      const skin=['#e0a977','#c28061','#f8c493'];
+      const handY=1.05+Math.sin(time*5)*.17;
+      ellipsoid(x-.68,1.43,z-2.04,.19,.21,.17,skin);
+      ellipsoid(x-.68,1.6,z-2.01,.2,.088,.18,['#603b42','#462f3e','#8d5555']);
+      ellipsoid(x-.68,1.07,z-2.03,.28,.25,.19,['#587871','#46645e','#81a089']);
+      ellipsoid(x-.33,handY,z-2.22,.23,.08,.09,skin);
+      if(p.food==='tea')cube(x-.1,handY-.09,z-2.24,.095,.19,.085,['#d29b5b','#ae815d','#f8d09d']);
+    }
+    for(const j of [-1.52,1.52])lantern3(x+j,1.74,z-2.12,true);
+  }
+  return {z,x,p,on:c.lit,side:c.side};
+}
+function waterside(p,x,z,time){
+  const side=Math.sign(x), far=x+side*14;
+  const lo=Math.min(x- side*.75,far),hi=Math.max(x-side*.75,far);
+  face('#284f62',[[lo,.02,z-12],[hi,.02,z-12],[hi,.02,z+19],[lo,.02,z+19]]);
+  for(let i=0;i<44;i++){
+    const xx=lo+rnd(i+40)*(hi-lo),zz=z-11+rnd(i+20)*29;
+    const len=.15+rnd(i)*1.2;
+    face(i%7===0?'#ce956d77':'#75b2b455',[[xx,.025,zz],[xx+len,.025,zz],[xx+len,.025,zz+.07],[xx,.025,zz+.07]]);
+  }
+  const rail=['#8b796e','#64555b','#c5a089'];
+  cube(x-side*1.25,.08,z,.14,.1,17,rail);
+  cube(x-side*1.25,.81,z,.12,.12,17,rail);
+  for(let i=-4;i<=4;i++)cube(x-side*1.25,0,z+i*2,.15,1,.15,rail);
+  if(p.landmark==='wharf'){
+    cube(x+side*1.36,0,z,3.1,.34,1.95,['#98765f','#664e45','#b48b65']);
+    const boat=x+side*(4+Math.sin(time*1.4)*.15);
+    const hull=['#82513e','#683e38','#bc7d54'];
+    ellipsoid(boat,.18,z+2.3,1.46,.2,.39,hull);
+    roof(boat,.88,z+2.3,1.35,.7,['#bd9d68','#886a55']);
+    for(const offset of [-.5,.5])cube(boat+offset,.23,z+2.26,.065,.66,.065,hull);
+    lantern3(boat+.72,.54,z+2,true);
+  }else{
+    for(let i=0;i<5;i++)tree3(x+side*5.3,z+12+i*1.5,1.8+rnd(i)*.5);
+    for(const dz of [-7,1,8]){
+      cube(x-side*1.4,0,z+dz,.08,2.3,.08,rail);
+      lantern3(x-side*1.4,2.15,z+dz,true);
+    }
+  }
+}
+function school(p,x,z){
+  const level=['primary','middle','high','college'].indexOf(p.landmark);
+  const facade=[['#b98560','#82605f','#d0a277'],['#af765b','#815f56','#ce9c74'],['#a67057','#755258','#c18f6d'],['#a69983','#726f75','#c4b59d']][level];
+  const h=level===3?5.3:3.75;
+  cube(x,0,z+2.4,5.2,h,4.35,facade);
+  if(level<3)roof(x,h,z+2.4,5.65,4.8,['#a34f47','#653e4a']);
+  else cube(x,h,z+2.4,5.55,.3,4.6,['#7e8892','#626f80','#aab4b7']);
+  for(let row=0;row<(level===3?4:3);row++)for(let j=-2;j<=2;j++){
+    cube(x+j*.91,.6+row*1.06,z+.21,.58,.68,.031,['#f0bd77','#a98d72','#e2b682']);
+  }
+  const pillar=['#9a7567','#695761','#c39476'];
+  for(const side of [-1,1])cube(x+side*1.68,0,z-2,.26,2.35,.31,pillar);
+  cube(x,2.03,z-2,3.66,.39,.36,['#6e4247','#523941','#bd855e']);
+  for(const side of [-1,1])lantern3(x+side*1.73,2.51,z-2,true);
+}
+function roadProp(o,z){
+  if(z<1.4)return;
+  if(o.kind===0){
+    quad('#253b4c',o.x-.69,o.x+.69,z-.63,z+.63,.009);
+    quad('#587484',o.x-.52,o.x+.41,z-.42,z+.44,.012);
+    quad('#afaaa26e',o.x-.34,o.x+.27,z-.11,z+.08,.016);
+  }else if(o.kind===1){
+    cube(o.x,0,z,1.14,.74,.92,['#ae754d','#79574d','#dfad77']);
+    for(let i=0;i<5;i++)cube(o.x-.46+i*.23,.07,z-.47,.036,.6,.025,['#e0aa72','#c69268','#edbc89']);
+    cube(o.x,.73,z,1.22,.1,1,['#c48755','#a47250','#e6b67f']);
+  }else{
+    const paint=['#ad544b','#764e51','#d07a5d'];
+    cube(o.x,.2,z,1.3,.51,.82,paint);
+    cube(o.x,.69,z,1.45,.1,.94,['#cc9467','#93634f','#eac491']);
+    for(const j of [-.52,.52])ellipsoid(o.x+j,.19,z-.43,.19,.19,.085,['#222938','#3a4050','#596173']);
+  }
+}
+function beam(a,b,width,color){
+  const dx=b[0]-a[0],dy=b[1]-a[1],dz=b[2]-a[2];
+  const length=Math.hypot(dx,dy,dz);
+  if(length<.001)return;
+  const planar=Math.hypot(dy,dz);
+  const u=planar>.001?[0,dz/planar,-dy/planar]:[0,1,0];
+  const v=[(dy*u[2]-dz*u[1])/length,-dx*u[2]/length,dx*u[1]/length];
+  const ring=(end,i)=>{
+    const angle=i*Math.PI/3;
+    return end.map((n,k)=>n+width*(u[k]*Math.cos(angle)+v[k]*Math.sin(angle)));
+  };
+  for(let i=0;i<6;i++)face(color[i%color.length],[ring(a,i),ring(a,i+1),ring(b,i+1),ring(b,i)]);
+}
+const shadeCache = new Map();
+function litTone(color, light){
+  const step=Math.round(light*24),key=color+':'+step;
+  if(shadeCache.has(key))return shadeCache.get(key);
+  const raw=parseInt(color.slice(1),16);
+  const rgb=[raw>>16&255,raw>>8&255,raw&255];
+  const out='rgb('+rgb.map((v,i)=>Math.round(Math.min(255,v*step/24+[13,9,5][i]))).join(',')+')';
+  shadeCache.set(key,out);
+  return out;
+}
+const denim=['#1a3550','#244360','#305672','#3d6580'];
+const shirt=['#cad9db','#e8e9de','#b4c6ce','#faf1df'];
+const skin=['#bd7958','#e6ab7c','#ffcd98','#dfa071'];
+const blue=['#267e86','#355a63','#6cd8c4','#bdddc5'];
+const metal=['#63838c','#aec4be','#e7dbc4','#889ea7'];
+const black=['#151a21','#262c36','#303945'];
+function cyclist(time){
+  const roll=-lean*.24, sn=Math.sin(roll), cs=Math.cos(roll);
+  const yaw=state==='ready'?-.60:.17+lean*.19;
+  const sy=Math.sin(yaw),cy=Math.cos(yaw);
+  const bob=y+(state==='run'?Math.sin(time*14)*.017:0);
+  const point=(x,h,z)=>{
+    const side=x*cs-h*sn;
+    return [playerX+side*cy+z*sy,bob+h*cs+x*sn,PLAYER_Z+z*cy-side*sy];
+  };
+  const tube=(a,b,w,c)=>beam(point(...a),point(...b),w,c);
+  const shape=(x,h,z,w,v,d,c)=>ellipsoid(...point(x,h,z),w,v,d,c);
+  const rotation=time*10;
+  const rubber=['#232934','#171e29','#434b56'];
+  for(const pos of [-.59,.64]){
+    const axle=point(0,.38,pos);
+    const ring=(i,r,offset=0)=>point(offset,.38+r*Math.cos(i),pos+r*Math.sin(i));
+    for(let j=0;j<24;j++){
+      const a=j*Math.PI/12,b=(j+1)*Math.PI/12;
+      face(rubber[j%3],[ring(a,.387,-.035),ring(b,.387,-.035),ring(b,.387,.035),ring(a,.387,.035)]);
+      for(const side of [-1,1]){
+        face(black[j%3],[ring(a,.387,side*.035),ring(b,.387,side*.035),ring(b,.335,side*.04),ring(a,.335,side*.04)]);
+        face(metal[j%4],[ring(a,.337,side*.04),ring(b,.337,side*.04),ring(b,.315,side*.04),ring(a,.315,side*.04)]);
+      }
+    }
+    for(let k=0;k<8;k++){
+      const a=ring(rotation+k*Math.PI/4,.318);
+      face('#c6c8ba99',[axle,a,ring(rotation+k*Math.PI/4+.022,.318)]);
+    }
+    shape(0,.38,pos,.073,.06,.058,metal);
+    const fender=(a,r,w)=>point(w,.38+Math.cos(a)*r,pos+Math.sin(a)*r);
+    for(let j=-7;j<7;j++){
+      const a=j*Math.PI/24,b=(j+1)*Math.PI/24;
+      face(j%3===0?'#b5ddc4':'#75aaa8',[fender(a,.409,-.053),fender(b,.409,-.053),fender(b,.409,.053),fender(a,.409,.053)]);
+    }
+    const angle=rotation+pos;
+    tube([.038,.38+Math.cos(angle)*.25,pos+Math.sin(angle)*.25],[.038,.38+Math.cos(angle)*.32,pos+Math.sin(angle)*.32],.014,['#efb64f','#ffdd80']);
+
+  }
+  const rear=[0,.38,-.59], front=[0,.38,.64], crank=[0,.5,-.06], seat=[0,.98,-.27], head=[0,.91,.45];
+  for(const [a,b] of [[rear,seat],[rear,crank],[crank,seat],[seat,head],[head,crank],[head,front]])tube(a,b,.034,blue);
+  tube(head,[0,1.32,.51],.03,metal);
+  tube([-.31,1.32,.51],[.31,1.32,.51],.029,black);
+  shape(0,.99,-.28,.165,.05,.20,black);
+  tube([-.22,1.32,.51],[-.33,1.32,.51],.044,['#2d3342','#474153']);
+  tube([.22,1.32,.51],[.33,1.32,.51],.044,['#2d3342','#474153']);
+  shape(0,1.22,.555,.112,.085,.086,['#ffe4a3','#dba968','#fff2c5']);
+  tube([-.14,1.28,.68],[.14,1.28,.68],.022,metal);
+  for(const side of [-1,1]){
+    tube([side*.14,1.28,.68],[side*.14,1.08,.74],.018,metal);
+    tube([side*.14,1.08,.74],[side*.14,1.09,.45],.016,metal);
+  }
+  tube([-.14,1.08,.74],[.14,1.08,.74],.019,metal);
+  shape(0,.79,-.65,.11,.065,.064,['#7f383e','#e75a4e','#ffb27e']);
+  for(const side of [-1,1]){
+    const phase=rotation*.64+(side<0?Math.PI:0);
+    const pedal=[side*.18,.5+Math.cos(phase)*.15,-.07+Math.sin(phase)*.15];
+    const hip=[side*.15,1.05,-.27], knee=[side*.21,.81+Math.cos(phase)*.09,.09+Math.sin(phase)*.15];
+    tube(hip,knee,.107,denim);
+    tube(knee,pedal,.074,denim);
+    tube([side*.055,.5,-.06],pedal,.023,metal);
+    tube([pedal[0]-.095,pedal[1]-.04,pedal[2]],[pedal[0]+.095,pedal[1]-.04,pedal[2]],.026,black);
+    shape(pedal[0],pedal[1],pedal[2]+.065,.095,.065,.139,shirt);
+    tube([side*.21,1.55,-.03],[side*.3,1.38,.19],.074,shirt);
+    tube([side*.3,1.38,.19],[side*.29,1.32,.51],.053,skin);
+  }
+  shape(0,1.33,-.15,.29,.36,.22,shirt);
+  shape(0,1.65,.01,.09,.11,.09,skin);
+  tube([-.13,1.62,-.08],[.13,1.63,-.08],.034,['#c84e52','#e9735d','#a93747']);
+  for(const side of [-1,1]){
+    tube([side*.15,1.61,-.21],[side*.20,1.23,-.34],.035,['#3b525f','#577681','#6f8792']);
+    shape(side*.21,1.30,-.405,.046,.10,.053,['#31616b','#436c79','#79a4a8']);
+  }
+  shape(0,1.84,.035,.245,.267,.223,skin);
+  shape(0,1.935,-.012,.255,.20,.235,['#181e2a','#282635','#3e3540','#52404a']);
+  for(const side of [-1,1])shape(side*.231,1.82,.025,.055,.079,.051,skin);
+  const pack=['#317b94','#489bb0','#7bb7c8','#acd4d9'];
+  shape(0,1.33,-.347,.257,.306,.174,pack);
+  shape(0,1.252,-.487,.195,.148,.059,['#394d6c','#4d6a89','#607d99']);
+  tube([-.13,1.30,-.539],[.128,1.30,-.539],.013,metal);
+  shape(.156,1.408,-.487,.052,.053,.024,['#e7a84e','#f5c677','#ffe5a6']);
+  tube([-.13,1.51,-.462],[0,1.55,-.48],.015,['#a3c6bb','#dce4cc']);
+  tube([0,1.55,-.48],[.13,1.51,-.462],.015,['#a3c6bb','#dce4cc']);
+  tube([-.13,1.19,-.536],[.13,1.19,-.536],.011,['#ebb75d','#fad28a']);
+  shape(-.099,1.48,-.49,.025,.031,.017,['#f8ecd6','#ffe6a1']);
+  const [ux,uy]=project(...point(0,.8,-.70));
+  return {x:ux,y:uy};
+}
+function motorVehicle(t,id){
+  const z=PLAYER_Z,x=playerX,car=id==='car';
+  const angle=-lean*.12, tilt=Math.sin(angle);
+  const point=(dx,dy,dz)=>[x+dx-dy*tilt,y+dy+dx*tilt,z+dz];
+  const tube=(a,b,r,palette)=>beam(point(...a),point(...b),r,palette);
+  const shell=car?['#bd4f46','#933b3e','#e47755']:['#309991','#2e6b72','#52b7a5'];
+  const wheel=['#242933','#373c46','#55565e'];
+  if(car){
+    for(const side of [-1,1])for(const at of [-.65,.61]){
+      ellipsoid(...point(side*.59,.24,at),.13,.25,.25,wheel);
+      ellipsoid(...point(side*.69,.24,at),.034,.12,.12,metal);
+    }
+    const body=[[-.59,.24,-.96],[.59,.24,-.96],[.64,.57,-.86],[-.64,.57,-.86]];
+    const end=body.map(([a,b,c])=>[a,b,-c]);
+    for(let i=0;i<4;i++)face(shell[i%3],[point(...body[i]),point(...body[(i+1)%4]),point(...end[(i+1)%4]),point(...end[i])]);
+    face(shell[0],body.map(v=>point(...v)));
+    const glass=['#314c64','#64859c','#a4c3c5'];
+    const rear=[[-.48,.57,-.55],[.48,.57,-.55],[.385,.97,-.28],[-.385,.97,-.28]];
+    const front=rear.map(([a,b,c])=>[a,b,-c+.11]);
+    face(glass[0],rear.map(v=>point(...v)));
+    face(glass[1],[point(...rear[0]),point(...rear[3]),point(...front[3]),point(...front[0])]);
+    face(glass[1],[point(...rear[1]),point(...front[1]),point(...front[2]),point(...rear[2])]);
+    face(shell[2],[point(...rear[2]),point(...rear[3]),point(...front[3]),point(...front[2])]);
+    tube([-.48,.24,-.98],[.48,.24,-.98],.048,metal);
+    for(const side of [-1,1])tube([side*.35,.48,-.91],[side*.53,.48,-.91],.047,['#ff8062','#ffb38a']);
+  }else{
+    for(const at of [-.60,.57]){
+      ellipsoid(...point(0,.30,at),.103,.30,.30,wheel);
+      ellipsoid(...point(.084,.30,at),.04,.155,.155,metal);
+      const spin=t*12;
+      tube([.116,.3,at],[.117,.3+Math.sin(spin)*.13,at+Math.cos(spin)*.13],.017,metal);
+    }
+    ellipsoid(...point(0,.49,-.20),.34,.25,.68,shell);
+    ellipsoid(...point(0,.64,.44),.255,.35,.28,shell);
+    ellipsoid(...point(0,.76,-.34),.24,.071,.32,wheel);
+    tube([-.35,.96,.47],[.35,.96,.47],.037,metal);
+    for(const side of [-1,1]){
+      tube([side*.19,1.29,-.30],[side*.28,.97,.46],.055,shirt);
+      tube([side*.13,.96,-.34],[side*.25,.54,.21],.074,denim);
+      ellipsoid(...point(side*.25,.50,.25),.084,.063,.132,shirt);
+    }
+    ellipsoid(...point(0,1.13,-.25),.24,.30,.18,shirt);
+    ellipsoid(...point(0,1.45,-.18),.19,.17,.17,skin);
+    ellipsoid(...point(0,1.52,-.18),.211,.15,.196,['#e1a94e','#eebd64','#ffd686']);
+    ellipsoid(...point(0,1.13,-.422),.206,.229,.09,['#347e96','#4599b0','#8bc7ca']);
+    tube([-.15,.56,-.81],[.15,.56,-.81],.051,['#f26c52','#ffae78']);
+  }
+  const [sx,sy]=project(...point(0,car?.46:.54,car?-.97:-.81));
+  return {x:sx,y:sy};
+}
+function companion(t,id){
+  const z=PLAYER_Z-1.68,x=petX+(id==='cat'?-.87:.88);
+  const swing=Math.sin(t*15), air=id==='parrot';
+  if(air){
+    const yy=1.12+Math.sin(t*6)*.13+y*.6;
+    const green=['#289378','#48bc7b','#88d17a'], red=['#cb5234','#ed7250','#ffd069'];
+    ellipsoid(x,yy,z,.14,.14,.22,green);
+    ellipsoid(x,yy+.115,z+.13,.12,.12,.12,red);
+    ellipsoid(x,yy+.11,z+.235,.052,.054,.045,['#f3b95e','#ffdc83']);
+    for(const side of [-1,1])face(green[side===1?0:1],[[x,yy,z],[x+side*.32,yy+.17*swing,z-.08],[x+side*.21,yy+.10*swing,z-.24],[x,yy,z-.15]]);
+    face('#df6b52',[[x-.07,yy,z-.09],[x+.07,yy,z-.09],[x+.04,yy-.053,z-.35],[x-.07,yy-.053,z-.37]]);
+    return;
+  }
+  const dog=id==='dog', base=dog?['#bc7846','#e4a863','#f2c586']:['#daad83','#f1d8b3','#895a49'];
+  const yy=.27+Math.abs(swing)*.054;
+  ellipsoid(x,yy,z,.177,.155,.27,base);
+  ellipsoid(x,yy+.113,z+.205,.146,.14,.123,base);
+  for(const side of [-1,1]){
+    if(dog)ellipsoid(x+side*.126,yy+.108,z+.18,.051,.09,.058,['#975d44','#bd8154']);
+    else face('#a77361',[[x+side*.06,yy+.20,z+.16],[x+side*.147,yy+.28,z+.20],[x+side*.133,yy+.155,z+.23]]);
+    for(const front of [-1,1])beam([x+side*.091,yy-.08,z+front*.15],[x+side*.09,.035,z+front*.15+.093*swing*side*front],.038,base);
+  }
+  beam([x,yy+.03,z-.22],[x+.07*swing,yy+(dog?.15:.29),z-.38],.041,base);
+}
+function bridgeView(c,travel,time,lights){
+  const near=Math.max(1,c.start+7-travel), far=c.start+96-travel;
+  if(far<=near||near>160)return;
+  const kind=c.bridge, deck=['#4b5366','#343e52','#819099'];
+  const edges=kind==='cable'?['#7a9c9f','#526c80','#b9cbc1']:['#a38b77','#756e73','#c3aa93'];
+  quad('#183849',-45,45,near,far,-.5);
+  for(let k=0;k<52;k+=2){
+    const z=c.start+8+rnd(k+311)*86-travel;
+    if(z<near)continue;
+    const x=(rnd(k+221)-.5)*61, length=.3+rnd(k)*2.5;
+    if(Math.abs(x)>4.1)quad(k%5?'#538d9c77':'#e8b27c85',x,x+length,z,z+.08,-.48);
+  }
+  quad('#4f5968',-3.75,3.75,near,far,.03);
+  for(const side of [-1,1]){
+    const x=side*3.98;
+    cube(x,-.12,(near+far)/2,.55,.24,far-near,deck);
+    const railing={urban:.88,cable:.90,span:.68,broad:1.0,river:.79}[kind];
+    cube(x,railing,(near+far)/2,.1,.09,far-near,edges);
+    if(kind!=='span')cube(x,.40,(near+far)/2,.065,.062,far-near,edges);
+    if(kind==='urban')cube(x,.59,(near+far)/2,.055,.045,far-near,['#a6584c','#824448','#ba6e59']);
+    if(kind==='river')cube(x,.04,(near+far)/2,.36,.13,far-near,['#858d7e','#56665f','#acb6a0']);
+    for(let k=0;k<20;k+=quality>.74?1:2){
+      const z=c.start+8+k*4.4-travel;
+      if(z<near||z>far)continue;
+      cube(x,.03,z,.11,railing+.12,.12,edges);
+      if(k%4===2){
+        cube(x,0,z,.09,2.87,.09,edges);
+        const arm=x-side*.4;
+        cube(arm,2.8,z,.82,.09,.11,edges);
+        cube(x-side*.73,2.68,z,.20,.14,.21,['#ffd692','#f3b769','#fff1b6']);
+        lights.push({x:x-side*.73,z,y:2.72});
+      }
+    }
+    if(kind==='cable'){
+      const z=c.start+53-travel;
+      if(z>3){
+        beam([side*4.2,0,z],[side*2.12,8.5,z],.23,edges);
+        beam([side*2.12,8.5,z],[0,9.25,z],.16,edges);
+        for(const sign of [-1,1])for(let i=1;i<=6;i+=quality>.74?1:2){
+          const anchor=z+sign*i*5.5;
+          if(anchor<1.2)continue;
+          beam([side*2.16,8.46-i*.34,z],[x,.21,anchor],.024,['#b2bfbd','#ecdbb0']);
+        }
+      }
+    }
+  }
+  for(let j=0;j<15;j++){
+    const z=c.start+13+j*5.6-travel;
+    if(z<near||z>far)continue;
+    if(j%4===0)quad('#bac0ad42',-3.63,3.63,z,z+.08,.036);
+    for(const x of [-1.175,1.175])quad('#e4d7aa9b',x-.024,x+.024,z,z+1.64,.037);
+  }
+  const gleam=c.start+11;
+  for(let i=0;i<29;i+=quality>.74?1:2){
+    const z=gleam+i*2.9-travel, pulse=.5+.5*Math.sin(time*2.2+i*.9);
+    if(z<near||z>far)continue;
+    for(const side of [-1,1]){
+      const x=side*(4.5+rnd(i+92)*2.2);
+      quad('rgba(244,180,105,'+(.09+pulse*.16)+')',x-.25,x+.25,z,z+.24,-.47);
+    }
+  }
+  const boatZ=c.start+50-travel;
+  if(boatZ>3&&boatZ<130){
+    const x=-8.2-Math.sin(time*.75)*1.25;
+    ellipsoid(x,-.35,boatZ,1.5,.2,.47,['#7c533f','#9c6951','#c08b60']);
+    roof(x,.35,boatZ,1.55,.7,['#bc9865','#89624c']);
+    lights.push({x,z:boatZ,y:.16});
+  }
+}
+function sky(time,travel){
+  const gradient=pen.createLinearGradient(0,0,0,H*.7);
+  gradient.addColorStop(0,'#0b1530');gradient.addColorStop(.43,'#284365');gradient.addColorStop(.71,'#8b5364');gradient.addColorStop(1,'#3e4558');
+  fill(gradient,0,0,W,H);
+  const mx=W*.77;glow(mx,83,117,'255,176,103',.3);oval('#ffe2a8',mx,83,27,27);
+  for(let i=0;i<62;i++){
+    const xx=rnd(i+19)*W, yy=9+rnd(i+100)*171;
+    oval(i%4===0?'#fff4cb':'#f0cca180',xx,yy,1+rnd(i)*.65,1);
+  }
+  for(let i=0;i<44;i++){
+    const x=i*W/43, y=H*.34-10-rnd(i+81)*38;
+    fill('#2c3b51',x,y,W/42,52);
+    path('#24354c',[[x-4,y+2],[x+W/106,y-9],[x+W/40,y+2]]);
+  }
+  quad('#344052',-25,25,1,180);
+  quad('#634f54',-18,18,1,165,.003);
+  quad('#394557',-3.62,3.62,1,165,.01);
+  for(const side of [-1,1]){
+    const a=side*3.7,b=side*3.89;
+    quad('#c48f7570',Math.min(a,b),Math.max(a,b),1,150,.014);
+  }
+  for(let j=1;j<21;j++){
+    const z=j*4.2-travel%4.2;
+    if(z<1)continue;
+    quad('#67819938',-3.58,3.58,z,z+.045,.021);
+    for(const laneX of [-1.175,1.175])quad('#e0c49c75',laneX-.025,laneX+.025,z+.25,z+1.82,.023);
+    for(const side of [-1,1]){
+      const lo=side<0?-8.5:3.89,hi=side<0?-3.89:8.5;
+      quad('#c9a59135',lo,hi,z,z+.025,.015);
+      for(const seam of j<11?[4.5,5.3,6.1,6.9]:[5.3,6.9]){
+        const at=side*(seam+(j%2)*.35);
+        quad('#c9a5912e',at,at+.023,z,z+4.2,.015);
+      }
+    }
+    const x=(rnd(Math.floor(travel/4.2)+j)-.5)*6;
+    quad('#8bb1c426',x-.4,x+.4,z+.8,z+1.5,.018);
+  }
+}
+function draw(time){
+  pen.setTransform(scale,0,0,scale,0,0);
+  const portrait=W<H;
+  focal=Math.min(H*.81,W*.94);cameraY=portrait?4.9:4.0;horizon=(portrait?.42:.34)+y*.012;cameraX=.58+playerX*.22;
+  const travel=distance;
+  sky(time,travel);
+  const start=Math.floor(travel/CHUNK), end=Math.floor((travel+155)/CHUNK), signs=[], lights=[];
+  for(let j=0;j<16;j++){
+    const i=Math.floor(travel/6)+j, z=i*6-travel+7;
+    const absolute=z+travel, strip=segment(Math.floor(absolute/CHUNK));
+    if(strip.bridge)continue;
+    for(const side of [-1,1]){
+      const x=side*(8.25+rnd(i+45)*.73);
+      if(z<12 || Math.abs(x-cameraX)*focal/z>W/2+115)continue;
+      const local=absolute-strip.start, target=places[strip.sides[side===-1?0:1].id];
+      if(target.landmark ? local>11&&local<78 : local>30&&local<43)continue;
+      if(i%7===3)tree3(x,z,2.5);
+      else housing(x,z,i+(side===1?14:0),i%3===0);
+    }
+    if(i%4===2){
+      for(const side of [-1,1]){
+        const x=side*4.7;
+        cube(x,0,z,.066,2.75,.067,['#867781','#635963','#a3979c']);
+        lantern3(x,2.52,z,true);
+        lights.push({x,z,y:2.52});
+      }
+    }
+  }
+  for(let i=Math.max(0,start-1);i<=end;i++){
+    const c=segment(i);
+    if(c.bridge){
+      bridgeView(c,travel,time,lights);
+      const z=c.start+34-travel;
+      if(z>8&&z<53)signs.push({z,x:0,p:places[c.sides[0].id],on:true});
+    }
+    for(const side of c.sides){
+      if(c.bridge)continue;
+      const sign=setpiece(side,time);
+      if(!sign)continue;
+      signs.push(sign);
+      if(sign.on&&!sign.p.landmark){
+        const edge=Math.sign(sign.x)*3.4;
+        for(let band=0;band<5;band++){
+          const half=.4+band*.22;
+          quad('rgba(247,165,91,'+(.15-band*.025)+')',edge-half,edge+half,sign.z-2.2-band*.34,sign.z-.7+band*.38,.024);
+        }
+      }
+    }
+    for(const o of c.obstacles)if(o.z-travel<95&&!o.passed)roadProp(o,o.z-travel);
+    for(const f of c.flies)if(!f.taken&&f.z-travel>1.2&&f.z-travel<100)lights.push({x:f.x,z:f.z-travel,y:1.08+Math.sin(time*5+f.z)*.16,fly:true});
+  }
+  if(state==='ready')playerX=0;
+  oval('#141d2d88',...project(playerX,.015,PLAYER_Z),focal/PLAYER_Z*.58,9);
+  const motion=state==='ready'?time*.27:rideTime;
+  const tailLight=equipped.vehicle==='bike'?cyclist(motion):motorVehicle(motion,equipped.vehicle);
+  if(equipped.pet!=='none')companion(motion,equipped.pet);
+  renderFaces();
+  glow(tailLight.x,tailLight.y,13,'254,98,70',.29);
+  const garland=Math.floor(travel/24);
+  for(let i=0;i<4;i++){
+    const z=(garland+i+1)*24-travel;
+    if(z<8||segment(Math.floor((z+travel)/CHUNK)).bridge)continue;
+    const cord=[];
+    for(let j=0;j<7;j++){
+      const x=(j-3)*1.65, y=4.35+Math.abs(j-3)*.2;
+      const [px,py]=project(x,y,z);
+      cord.push([px,py]);
+      if(j%2===1||z<40){
+        const r=Math.min(8,focal/z*.12);
+        glow(px,py+r*1.5,r*3.8,'255,173,86',.44);
+        oval(j%2?'#ffd58a':'#f8ad67',px,py+r*1.5,r*.77,r);
+      }
+    }
+    line('#a8826559',1,cord);
+  }
+  for(const s of signs){
+    const [x,yy]=project(s.x,s.p.landmark?5.51:2.27,s.z-(s.p.landmark?0:1.91));
+    if(s.on&&!s.p.landmark&&s.p.food!=='tea'&&s.z>5){
+      for(let i=0;i<3;i++){
+        const rise=(time*.72+i*.2)%1;
+        const [sx,sy]=project(s.x+.28+i*.11+Math.sin(time*2+i)*rise*.3,.96+rise*.81,s.z-2.24);
+        const spread=focal/s.z*(.04+rise*.16);
+        oval('rgba(255,229,184,'+(.33*(1-rise))+')',sx,sy,spread,spread*.59);
+      }
+    }
+    if(s.z>8&&s.z<47){
+      const title=s.p.sign??s.p.name, size=Math.min(14,Math.max(7,focal/s.z*.57));
+      pen.font='700 '+size+'px system-ui';
+      const width=Math.min(W/2-7,pen.measureText(title).width+13);
+      const center=Math.max(width/2+3,Math.min(W-width/2-3,x));
+      fill('#172035e8',center-width/2,yy-size-4,width,size+9);
+      fill(s.on?'#ffd17e':'#a9765d',center-width/2,yy+4,width,1);
+      pen.fillStyle='#ffe6bb';pen.textAlign='center';pen.fillText(title,center,yy,width-9);
+    }
+  }
+  for(const l of lights){
+    if(l.z<=2 || l.z>140 || (!l.fly && l.z<PLAYER_Z))continue;
+    const [x,yy]=project(l.x,l.y,l.z), size=Math.min(9,focal/l.z*.085);
+    if(x<0||x>W||yy>H)continue;
+    glow(x,yy,size*(l.fly?3.2:5),'255,183,93',l.fly?.69:.26);
+    if(l.fly)oval('#fff0a7',x,yy,size,size);
+  }
+  for(const s of sparks){
+    if(s.z-distance<2)continue;
+    const [x,yy]=project(s.x,s.y,s.z-distance);
+    glow(x,yy,9,'255,205,128',Math.min(.8,s.life));oval('#ffe28c',x,yy,1.8,1.8);
+  }
+}
+function update(dt){
+  const rules=modes[runMode];
+  const speed=rules.speed+Math.min(distance*rules.ramp,rules.boost);
+  const before=distance+PLAYER_Z;
+  distance+=speed*dt;
+  const at=distance+PLAYER_Z, index=Math.floor(at/CHUNK), c=segment(index);
+  for(const key of chunks.keys())if(key<index-1)chunks.delete(key);
+  buffered=Math.max(0,buffered-dt);
+  const beforeX=playerX;
+  playerX+=(LANES[lane]-playerX)*(1-Math.exp(-12*dt));
+  lean+=(Math.max(-1,Math.min(1,(playerX-beforeX)/(dt*8||1)))-lean)*(1-Math.exp(-13*dt));
+  rideTime+=dt*(.78+speed/67);
+  petX+=(playerX-petX)*(1-Math.exp(-5*dt));
+  const milestones=Math.floor(distance/25);
+  if(milestones>distanceReward){earn(milestones-distanceReward);distanceReward=milestones}
+  if(y>0||vy>0){y+=vy*dt;vy-=22*dt;if(y<0){y=0;vy=0}}
+  if(y===0&&buffered>0){buffered=0;vy=7.6;effect('jump')}
+  if(at>c.start+38)for(const side of c.sides)if(places[side.id].landmark)reveal(side);
+  for(const f of c.flies){
+    if(!f.taken&&Math.abs(f.z-at)<1.3&&Math.abs(f.x-playerX)<.69){
+      f.taken=true;gathered++;bonus+=10;earn(1);effect('fly');
+      c.collected++;
+      if(c.collected%4===0){
+        const shop=c.sides.find(side=>!side.lit&&!places[side.id].landmark);
+        if(shop)reveal(shop);
+      }
+    }
+  }
+  for(const o of c.obstacles){
+    if(!o.passed&&before<o.z&&at>=o.z){
+      if(Math.abs(o.x-playerX)<.89&&y<(o.kind===0?.24:o.kind===1?.68:.62)){finish();return}
+      o.passed=true;
+    }
+  }
+  for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.life-=dt;s.y+=dt*1.8;if(s.life<=0)sparks.splice(i,1)}
+  points=Math.floor(distance)+bonus;
+  music();
+}
+function hudText(id,text){
+  const node=get(id);
+  if(node.textContent!==text)node.textContent=text;
+}
+let simulationCarry=0,lastIdlePaint=-Infinity,slowFrames=0;
+const simStep=1/120;
+function frame(ms){
+  const elapsed=previous?Math.min(.09,(ms-previous)/1000):0;
+  previous=ms;
+  const running=state==='run'&&!get('journal').open&&!get('garage').open&&!document.hidden;
+  if(running){
+    simulationCarry+=elapsed;
+    while(simulationCarry>=simStep&&state==='run'){
+      update(simStep);
+      simulationCarry-=simStep;
+    }
+    const c=segment(Math.floor((distance+PLAYER_Z)/CHUNK));
+    hudText('place',c.sides.map(side=>places[side.id].name).join(' · '));
+    hudText('score',format(points)+' điểm');
+    hudText('flies',format(Math.floor(distance))+' m · +'+tripCoins+' xu');
+    if(elapsed>.031)slowFrames++;
+    else slowFrames=Math.max(0,slowFrames-1);
+    if(slowFrames>=16&&quality>.72){
+      quality=quality>.85?.84:.72;
+      slowFrames=0;
+      resize();
+    }
+    draw(ms/1000);
+  }else{
+    simulationCarry=0;
+    if(!document.hidden&&!get('journal').open&&!get('garage').open&&ms-lastIdlePaint>=80){
+      draw(ms/1000);
+      lastIdlePaint=ms;
+    }
+  }
+  if(ms>noticeUntil && !get('notice').hidden)get('notice').hidden=true;
+  requestAnimationFrame(frame);
+}
+function start(){
+  bankTrip();
+  runMode=selectedMode;tripCoins=0;savedTripCoins=0;distanceReward=0;petX=0;
+  get('mode-picker').hidden=true;get('mode-note').hidden=true;
+  enableAudio();simulationCarry=0;canvas.focus({preventScroll:true});state='run';document.body.classList.remove('paused');document.body.classList.add('running');distance=0;y=0;vy=0;lane=1;playerX=0;lean=0;rideTime=0;
+  chunks.clear();sparks.length=0;lit=0;gathered=0;buffered=0;step=0;nextNote=0;points=0;bonus=0;
+  get('overlay').hidden=true;get('stats').hidden=false;get('notice').hidden=true;
+}
+function finish(){
+  state='over';document.body.classList.remove('running','paused');effect('crash');points=Math.floor(distance)+bonus;
+  bankTrip();
+  if(points>(records[runMode]||0)){
+    records[runMode]=points;
+    if(runMode==='normal')save('cun-best-3d',points);
+    saveProgress();record();
+  }
+  get('mode-picker').hidden=false;get('mode-note').hidden=false;
+  get('heading').textContent='Gặp chướng ngại!';
+  get('summary').textContent=format(points)+' điểm · '+format(Math.floor(distance))+' m · +'+tripCoins+' xu';
+  get('play').textContent='Đạp lại';get('overlay').hidden=false;
+}
+function jump(){if(state==='run')buffered=.11}
+function shift(direction){if(state==='run')lane=Math.max(0,Math.min(2,lane+direction))}
+const playButton=get('play'), pauseButton=get('pause-run');
+function pauseGame(){
+  if(state!=='run')return;
+  bankTrip();
+  state='pause';
+  document.body.classList.replace('running','paused');
+  get('heading').textContent='Tạm dừng';
+  get('summary').textContent=format(points)+' điểm';
+  playButton.textContent='Đạp tiếp';
+  get('overlay').hidden=false;
+}
+function resumeGame(){
+  enableAudio();state='run';
+  document.body.classList.replace('paused','running');
+  get('overlay').hidden=true;canvas.focus({preventScroll:true});
+}
+playButton.onclick=()=>state==='pause'?resumeGame():start();
+pauseButton.onclick=()=>state==='pause'?resumeGame():pauseGame();
+document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseGame()});
+get('left-control').onclick=()=>shift(-1);
+get('jump-control').onclick=jump;
+get('right-control').onclick=()=>shift(1);
+let pointer;
+canvas.addEventListener('pointerdown',event=>{
+  if(!event.isPrimary || (event.pointerType==='mouse'&&event.button!==0))return;
+  pointer={id:event.pointerId,x:event.clientX,y:event.clientY,moved:false};
+  canvas.setPointerCapture(event.pointerId);
+});
+canvas.addEventListener('pointermove',event=>{
+  if(pointer?.id!==event.pointerId||pointer.moved)return;
+  const dx=event.clientX-pointer.x,dy=event.clientY-pointer.y;
+  if(Math.abs(dx)>26&&Math.abs(dx)>Math.abs(dy)){shift(Math.sign(dx));pointer.moved=true}
+  else if(dy<-26){jump();pointer.moved=true}
+});
+canvas.addEventListener('pointerup',event=>{if(pointer?.id===event.pointerId){if(!pointer.moved)jump();pointer=null}});
+canvas.addEventListener('pointercancel',()=>{pointer=null});
+window.addEventListener('keydown',event=>{
+  if(get('journal').open||get('garage').open)return;
+  if(event.code==='Escape'){if(state==='run')pauseGame();else if(state==='pause')resumeGame();return}
+  if(!['Space','ArrowUp','ArrowLeft','ArrowRight'].includes(event.code)||get('journal').open || (event.code==='Space'&&document.activeElement.tagName==='BUTTON'))return;
+  event.preventDefault();if(event.repeat)return;
+  if(event.code==='ArrowLeft')shift(-1);
+  else if(event.code==='ArrowRight')shift(1);
+  else if(state==='run')jump();
+  else if(state==='pause')resumeGame();
+  else start();
+});
+function chooseMode(id){
+  if(state==='run'||state==='pause')return;
+  selectedMode=id;
+  const m=modes[id];
+  for(const button of document.querySelectorAll('[data-mode]')){
+    button.setAttribute('aria-pressed',String(button.dataset.mode===id));
+  }
+  get('mode-note').textContent=id==='normal'?'Tập làm quen tuyến phố và các cây cầu.':m.name+' · Xe chạy nhanh hơn, chướng ngại dày hơn · Xu ×'+m.reward;
+  saveProgress();record();
+}
+for(const button of document.querySelectorAll('[data-mode]'))button.onclick=()=>chooseMode(button.dataset.mode);
+chooseMode(selectedMode);
+function shopAction(kind,item){
+  bankTrip();
+  if(!owned.has(item.id)){
+    if(wallet<item.price)return;
+    wallet-=item.price;owned.add(item.id);
+  }
+  equipped[kind]=item.id;
+  saveProgress();
+  renderGarage('Đã trang bị '+item.name+'.');
+}
+function renderGarage(message=''){
+  get('bank').textContent='Ví của bạn · '+format(wallet)+' xu';
+  get('shop-message').textContent=message||'Nhặt đom đóm, đi xa và thắp đèn quán để kiếm xu.';
+  for(const [kind,items] of Object.entries(catalog)){
+    get(kind==='vehicle'?'vehicles':'pets').replaceChildren(...items.map(item=>{
+      const card=document.createElement('div'), name=document.createElement('strong'), button=document.createElement('button');
+      const active=equipped[kind]===item.id, purchased=owned.has(item.id);
+      card.className='shop-item'+(active?' equipped':'');
+      name.textContent=item.icon+' '+item.name;
+      button.textContent=active?'Đang dùng':purchased?'Trang bị':item.price+' xu · Mua';
+      button.disabled=active||(!purchased&&wallet<item.price);
+      button.onclick=()=>shopAction(kind,item);
+      card.append(name,button);
+      return card;
+    }));
+  }
+}
+get('garage-open').onclick=()=>{pauseGame();bankTrip();renderGarage();get('garage').showModal()};
+window.addEventListener('pagehide',bankTrip);
+const reviewURL='https://tripmap.vn/en/food_most_reviewed-ninh_binh_phuong_nam_dinh.html';
+function journalCard(p,i){
+  const entry=document.createElement('li');
+  const title=document.createElement('strong');
+  title.textContent=p.name;
+  const note=document.createElement('div');
+  note.className='journal-kind';
+  note.textContent=unlocked.has(i)?(p.detail??'Đã ghé trong hành trình'):'Chưa ghé';
+  if(unlocked.has(i))entry.classList.add('stamped');
+  entry.append(title,note);
+  return entry;
+}
+function journalView(review=false){
+  get('stamps-tab').setAttribute('aria-pressed',String(!review));
+  get('reviews-tab').setAttribute('aria-pressed',String(review));
+  const root=get('entries'), summary=get('collection');
+  root.classList.toggle('review-list',review);
+  if(!review){
+    summary.textContent=unlocked.size+'/'+places.length+' điểm đã khám phá';
+    root.replaceChildren(...places.map(journalCard));
+    return;
+  }
+  const source=document.createElement('a');
+  source.className='source-link';source.href=reviewURL;source.target='_blank';source.rel='noopener';
+  source.textContent='TRIPMAP';
+  summary.replaceChildren('Quán đưa vào game có số đánh giá công khai. Số liệu tham khảo tháng 11/2026 từ ',source,'.');
+  root.replaceChildren(...places.filter(p=>p.reviews&&!p.source).sort((a,b)=>b.reviews-a.reviews).map(p=>{
+    const item=document.createElement('li'), count=document.createElement('strong');
+    count.textContent=format(p.reviews);
+    item.append(p.name,count);
+    return item;
+  }));
+}
+get('stamps-tab').onclick=()=>journalView();
+get('reviews-tab').onclick=()=>journalView(true);
+get('book').onclick=()=>{pauseGame();journalView();get('journal').showModal()};
+requestAnimationFrame(frame);
+</script></body></html>
